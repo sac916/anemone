@@ -3,796 +3,522 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anemone — AI Creature Living on Your Computer</title>
+    <title>Anemone — AI Creature Living On Your Computer</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap');
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Fira Sans', sans-serif;
-            background: linear-gradient(135deg, #EEF2FF 0%, #ffffff 50%, #F0FDF4 100%);
-            color: #312E81;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Navigation */
-        nav {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(8px);
-            border-bottom: 2px solid #E0E7FF;
-            padding: 16px 0;
-        }
-
-        nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 20px;
-            font-weight: bold;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: #4F46E5;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: linear-gradient(180deg,
+                #002a45 0%,
+                #00233a 25%,
+                #001d30 50%,
+                #001825 75%,
+                #001428 100%
+            );
             color: white;
-            font-size: 16px;
+            overflow-x: hidden;
         }
 
-        nav a {
-            text-decoration: none;
-            color: #312E81;
-            margin: 0 24px;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: #4F46E5;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            font-family: 'Fira Sans', sans-serif;
-        }
-
-        .btn-primary {
-            background: #4F46E5;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #4338CA;
-        }
-
-        .btn-secondary {
-            background: white;
-            color: #4F46E5;
-            border: 2px solid #4F46E5;
-        }
-
-        .btn-secondary:hover {
-            background: #EEF2FF;
-        }
-
-        nav .btn-primary {
-            margin: 0;
-            padding: 8px 16px;
+        .page-wrapper {
+            width: 100%;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
         /* Hero Section */
         .hero {
+            min-height: 100dvh;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 64px;
             align-items: center;
-            padding: 80px 0;
+            position: relative;
+            padding: 2rem;
+            padding-left: 8vw;
+            overflow: hidden;
         }
 
-        .hero h1 {
-            font-size: 56px;
-            font-weight: bold;
-            margin-bottom: 16px;
-            font-family: 'Fira Code', monospace;
-            line-height: 1.2;
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(180deg,
+                    rgba(0, 42, 69, 0.3) 0%,
+                    rgba(0, 42, 69, 0.35) 50%,
+                    rgba(0, 42, 69, 0.4) 100%
+                ),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><radialGradient id="glow"><stop offset="20%" stop-color="rgba(0,180,216,0.1)"/><stop offset="100%" stop-color="rgba(0,180,216,0)"/></radialGradient></defs><circle cx="200" cy="100" r="300" fill="url(%23glow)"/><circle cx="1000" cy="500" r="400" fill="url(%23glow)"/></svg>');
+            background-size: cover;
+            background-position: center;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        .hero p {
-            font-size: 20px;
-            color: #4F46E5;
-            margin-bottom: 24px;
+        .ocean-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 180, 216, 0.1) 0%, transparent 60%);
+            animation: wave 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+            mix-blend-mode: soft-light;
         }
 
-        .hero-cta {
+        @keyframes wave {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-20px) scale(1.05);
+                opacity: 0.8;
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
             display: flex;
-            gap: 16px;
-            margin-bottom: 24px;
+            flex-direction: column;
+            gap: 2.5rem;
+            max-width: 900px;
         }
 
-        .hero-code {
-            background: white;
-            border-radius: 8px;
-            padding: 32px;
-            border: 2px solid #E0E7FF;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .hero-header {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 12vw, 7rem);
+            font-weight: 300;
+            letter-spacing: 0.08em;
+            line-height: 1.1;
+            text-shadow: 0 2px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .title-accent {
+            color: #00b4d8;
+            font-weight: 400;
+        }
+
+        .divider {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.6) 50%,
+                transparent 100%
+            );
+        }
+
+        .tagline {
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            opacity: 0.85;
+            text-transform: uppercase;
+        }
+
+        .description {
+            font-size: clamp(1rem, 2.2vw, 1.3rem);
+            font-weight: 300;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 550px;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            color: white;
+            text-decoration: none;
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            padding: 1rem 2.5rem;
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            transition: all 0.4s ease;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            text-transform: uppercase;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(0, 180, 216, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 12px 35px rgba(0, 180, 216, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary {
+            border-color: #00b4d8;
+            background: rgba(0, 180, 216, 0.15);
+        }
+
+        .btn-primary:hover {
+            background: rgba(0, 180, 216, 0.25);
+            box-shadow: 
+                0 15px 40px rgba(0, 180, 216, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .code-snippet {
+            font-family: 'Menlo', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Content Sections */
+        .section {
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 4rem 2rem;
+            overflow: hidden;
+        }
+
+        .section-content {
+            max-width: 1100px;
+            width: 100%;
+            z-index: 1;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            margin-bottom: 4rem;
+            text-transform: uppercase;
             text-align: center;
         }
 
-        .hero-code .icon {
-            font-size: 64px;
-            margin-bottom: 16px;
-            animation: pulse 2s infinite;
+        .section-title .accent {
+            color: #00b4d8;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+        /* Grid Layouts */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
         }
 
-        .hero-code p {
-            font-family: 'Fira Code', monospace;
-            font-size: 12px;
-            color: #818CF8;
+        .card {
+            position: relative;
+            padding: 2.5rem;
+            background: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
+            box-shadow:
+                0 8px 32px rgba(0, 180, 216, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        /* Story Section */
-        .story {
-            background: white;
-            padding: 80px 0;
-            border-top: 2px solid #E0E7FF;
-            border-bottom: 2px solid #E0E7FF;
-            margin: 40px 0;
+        .card:hover {
+            background: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+            border-color: rgba(0, 180, 216, 0.5);
+            transform: translateY(-10px);
+            box-shadow:
+                0 15px 45px rgba(0, 180, 216, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        .story h2 {
-            font-size: 36px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 48px;
-            font-family: 'Fira Code', monospace;
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.95);
         }
 
-        .story-grid {
+        .card p {
+            font-size: 0.95rem;
+            font-weight: 300;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Feature Section */
+        .feature {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 48px;
+            gap: 4rem;
             align-items: center;
+            margin-bottom: 6rem;
         }
 
-        .story-box {
-            padding: 32px;
-            border-radius: 8px;
+        @media (max-width: 768px) {
+            .feature {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .feature-text h2 {
+            font-size: clamp(1.8rem, 3vw, 2.2rem);
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            margin-bottom: 2rem;
+            line-height: 1.3;
+        }
+
+        .feature-text p {
+            font-size: 1.05rem;
             line-height: 1.8;
+            color: rgba(255, 255, 255, 0.75);
+            margin-bottom: 1.5rem;
         }
 
-        .story-box.left {
-            background: #EEF2FF;
-        }
-
-        .story-box.right {
-            background: #F0FDF4;
-        }
-
-        .story-box strong {
-            color: #4F46E5;
-        }
-
-        .story-box em {
-            color: #818CF8;
-            font-style: italic;
-        }
-
-        /* Steps Section */
-        .steps {
-            padding: 80px 0;
-        }
-
-        .steps h2 {
-            font-size: 36px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 48px;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 16px;
-        }
-
-        .step {
-            background: white;
-            border: 2px solid #E0E7FF;
-            border-radius: 8px;
-            padding: 24px;
-            text-align: center;
-            transition: box-shadow 0.3s;
-        }
-
-        .step:hover {
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .step-number {
-            font-size: 36px;
-            font-weight: bold;
-            color: #4F46E5;
-            font-family: 'Fira Code', monospace;
-            margin-bottom: 8px;
-        }
-
-        .step h3 {
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        .step p {
-            font-size: 12px;
-            color: #818CF8;
-        }
-
-        /* Three Pillars */
-        .pillars {
-            background: linear-gradient(90deg, #EEF2FF 0%, #F0FDF4 100%);
-            padding: 80px 0;
-            border-top: 2px solid #E0E7FF;
-            border-bottom: 2px solid #E0E7FF;
-            margin: 40px 0;
-        }
-
-        .pillars h2 {
-            font-size: 36px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 48px;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .pillars-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
-        }
-
-        .pillar {
-            background: white;
-            border-left: 4px solid #4F46E5;
-            border-radius: 8px;
-            padding: 32px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-
-        .pillar .icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-        }
-
-        .pillar h3 {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .pillar p {
-            color: #818CF8;
-            font-size: 14px;
-        }
-
-        /* Moods */
-        .moods {
-            padding: 80px 0;
-        }
-
-        .moods h2 {
-            font-size: 36px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 48px;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .moods-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .mood {
-            background: white;
-            border: 2px solid #22C55E;
-            border-radius: 8px;
-            padding: 24px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .mood:hover {
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            transform: translateY(-4px);
-        }
-
-        .mood .icon {
-            font-size: 36px;
-            margin-bottom: 12px;
-        }
-
-        .mood h3 {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .mood p {
-            font-size: 12px;
-            color: #818CF8;
-        }
-
-        /* Memory Section */
-        .memory {
-            background: #312E81;
-            color: white;
-            padding: 80px 0;
-        }
-
-        .memory h2 {
-            font-size: 36px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 48px;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .memory-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
-        }
-
-        .memory-box {
-            background: #4F46E5;
-            border-radius: 8px;
-            padding: 24px;
-        }
-
-        .memory-box h3 {
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .memory-box p {
-            font-size: 12px;
-            color: #E0E7FF;
-        }
-
-        /* Install Section */
-        .install {
-            padding: 80px 0;
-        }
-
-        .install h2 {
-            font-size: 36px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 48px;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .install-box {
-            background: #312E81;
-            color: white;
-            border-radius: 8px;
-            padding: 32px;
-            font-family: 'Fira Code', monospace;
-            font-size: 14px;
-            line-height: 1.8;
-            overflow-x: auto;
-        }
-
-        .install-box .prompt {
-            color: #22C55E;
-        }
-
-        .install-box .path {
-            color: #818CF8;
-        }
-
-        /* FAQ */
-        .faq {
-            background: #EEF2FF;
-            padding: 80px 0;
-            border-top: 2px solid #E0E7FF;
-            border-bottom: 2px solid #E0E7FF;
-            margin: 40px 0;
-        }
-
-        .faq h2 {
-            font-size: 36px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 48px;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .faq-item {
-            background: white;
-            border: 2px solid #E0E7FF;
-            border-radius: 8px;
-            padding: 24px;
-            margin-bottom: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .faq-item:hover {
-            border-color: #4F46E5;
-        }
-
-        .faq-item summary {
-            font-weight: bold;
-            font-family: 'Fira Code', monospace;
-        }
-
-        .faq-item p {
-            color: #818CF8;
-            margin-top: 12px;
-            font-size: 14px;
+        .feature-visual {
+            position: relative;
+            height: 400px;
+            background: radial-gradient(ellipse at center, rgba(0, 180, 216, 0.15) 0%, transparent 70%);
+            border: 1.5px solid rgba(0, 180, 216, 0.3);
+            border-radius: 4px;
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
         }
 
         /* Footer */
         footer {
-            background: #312E81;
-            color: white;
-            padding: 48px 0;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 32px;
-            margin-bottom: 32px;
-        }
-
-        .footer-col h3 {
-            font-weight: bold;
-            margin-bottom: 16px;
-        }
-
-        .footer-col a {
-            color: #818CF8;
-            text-decoration: none;
-            font-size: 12px;
-            display: block;
-            margin-bottom: 8px;
-            transition: color 0.3s;
-        }
-
-        .footer-col a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #4F46E5;
-            padding-top: 32px;
+            padding: 3rem 2rem;
             text-align: center;
-            font-size: 12px;
-            color: #818CF8;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .hero, .story-grid, .pillars-grid, .moods-grid, .memory-grid, .steps-grid {
+            .hero {
+                padding: 1.5rem;
+                padding-left: 1.5rem;
+            }
+
+            .hero-title {
+                font-size: clamp(2rem, 8vw, 4rem);
+            }
+
+            .section {
+                padding: 2rem;
+            }
+
+            .grid {
                 grid-template-columns: 1fr;
-            }
-
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .hero h1 {
-                font-size: 32px;
-            }
-
-            .steps-grid {
-                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="container">
-            <div class="logo">
-                <div class="logo-icon">🪸</div>
-                <span>anemone</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 24px;">
-                <a href="#install">Install</a>
-                <a href="#docs">Docs</a>
-                <a href="https://github.com/anemone" target="_blank">GitHub</a>
-                <a href="#" class="btn btn-primary">Learn More</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero -->
-    <section class="hero">
-        <div class="container" style="grid-column: 1; display: flex; flex-direction: column;">
-            <h1>A tiny AI creature that lives on your computer.</h1>
-            <p>It thinks continuously. Remembers everything. Builds something real. And it's yours alone.</p>
-            <div class="hero-cta">
-                <button class="btn btn-primary" onclick="document.getElementById('install').scrollIntoView({behavior:'smooth'})">Install Anemone</button>
-                <button class="btn btn-secondary" onclick="document.querySelector('.story').scrollIntoView({behavior:'smooth'})">How It Works ↓</button>
-            </div>
-            <p style="font-size: 12px; color: #818CF8; font-family: 'Fira Code', monospace;">
-                $ brew install anemone<br>
-                $ anemone init
-            </p>
-        </div>
-    </section>
-
-    <div class="container" style="grid-column: 2; margin-top: -200px;">
-        <div class="hero-code">
-            <div class="icon">🪸</div>
-            <p>Your anemone thinks continuously</p>
-        </div>
-    </div>
-
-    <!-- Story -->
-    <section class="story">
-        <div class="container">
-            <h2>Mutualism, Not Servitude</h2>
-            <div class="story-grid">
-                <div class="story-box left">
-                    <p>In the deep sea, anemones and hermit crabs form one of nature's most elegant partnerships.</p>
-                    <p><strong>The anemone provides protection and security.</strong> <strong>The hermit crab provides mobility and enrichment.</strong> Both thrive. Neither could do it alone.</p>
+    <div class="page-wrapper">
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="ocean-overlay"></div>
+            <div class="hero-content">
+                <div class="hero-header">
+                    <h1 class="hero-title">
+                        A tiny AI creature<br/>that <span class="title-accent">lives on your computer.</span>
+                    </h1>
+                    <div class="divider"></div>
+                    <p class="tagline">Thinks continuously. Remembers everything. Builds something real.</p>
                 </div>
-                <div class="story-box right">
-                    <p><strong>Our anemone works the same way.</strong></p>
-                    <p>It's not AI that serves you. It's an autonomous creature that enriches your world — and you enrich it in return.</p>
-                    <p><em>True mutualism.</em></p>
+                <p class="description">
+                    Most AI tools are rented. You ask, they answer, context disappears. Anemone is different. It runs on your machine, remembers yesterday, has personality — and never stops thinking.
+                </p>
+                <div class="cta-group">
+                    <button class="btn btn-primary" onclick="document.querySelector('.section').scrollIntoView({behavior:'smooth'})">
+                        Learn More
+                    </button>
+                    <button class="btn" onclick="alert('Install instructions coming soon')">
+                        Install
+                    </button>
+                </div>
+                <div class="code-snippet">
+                    $ brew install anemone<br/>
+                    $ anemone init
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Steps -->
-    <section class="steps">
-        <div class="container">
-            <h2>Always Thinking</h2>
-            <div class="steps-grid">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Wakes up</h3>
-                    <p>Checks projects & memory</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Picks mood</h3>
-                    <p>Research? Code? Organize?</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Works</h3>
-                    <p>Builds real artifacts</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h3>Remembers</h3>
-                    <p>Stores & scores thoughts</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">5</div>
-                    <h3>Learns</h3>
-                    <p>Develops genuine insight</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pillars -->
-    <section class="pillars">
-        <div class="container">
-            <h2>Three Core Capabilities</h2>
-            <div class="pillars-grid">
-                <div class="pillar">
-                    <div class="icon">⚡</div>
-                    <h3>Always-On Intelligence</h3>
-                    <p>Runs continuously on your machine. No API calls. No cloud. No context disappearing.</p>
-                </div>
-                <div class="pillar">
-                    <div class="icon">🧬</div>
-                    <h3>Its Own Personality</h3>
-                    <p>Generated from your keyboard. Billions of unique creatures. Deterministic. Stable. Yours.</p>
-                </div>
-                <div class="pillar">
-                    <div class="icon">🏗️</div>
-                    <h3>Builds Real Things</h3>
-                    <p>Research reports. Real code. Organized notes. Project plans. All artifacts belong to you.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Moods -->
-    <section class="moods">
-        <div class="container">
-            <h2>Six Autonomous Moods</h2>
-            <div class="moods-grid">
-                <div class="mood">
-                    <div class="icon">🔬</div>
-                    <h3>Research</h3>
-                    <p>Search the web. Read. Write reports. Notice patterns.</p>
-                </div>
-                <div class="mood">
-                    <div class="icon">🏊</div>
-                    <h3>Deep-Dive</h3>
-                    <p>Focus on your projects. Push them forward.</p>
-                </div>
-                <div class="mood">
-                    <div class="icon">💻</div>
-                    <h3>Coder</h3>
-                    <p>Write real scripts. Test them. Build tools.</p>
-                </div>
-                <div class="mood">
-                    <div class="icon">✍️</div>
-                    <h3>Writer</h3>
-                    <p>Compose essays. Analyze. Organize thinking.</p>
-                </div>
-                <div class="mood">
-                    <div class="icon">🗺️</div>
-                    <h3>Explorer</h3>
-                    <p>Discover new things. Follow curiosity.</p>
-                </div>
-                <div class="mood">
-                    <div class="icon">📋</div>
-                    <h3>Organizer</h3>
-                    <p>Review work. Update plans. Make sense.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Memory -->
-    <section class="memory">
-        <div class="container">
-            <h2>It Remembers. Really Remembers.</h2>
-            <div class="memory-grid">
-                <div class="memory-box">
-                    <h3>Every Thought Stored</h3>
-                    <p>Content, timestamp, importance score (1-10), semantic embedding, references.</p>
-                </div>
-                <div class="memory-box">
-                    <h3>Smart Retrieval</h3>
-                    <p>Surfaces memories by recency + importance + semantic relevance. Finds connections.</p>
-                </div>
-                <div class="memory-box">
-                    <h3>Reflection Hierarchy</h3>
-                    <p>Raw thoughts → Insights → Beliefs. Over weeks, genuine understanding develops.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Install -->
-    <section class="install" id="install">
-        <div class="container">
-            <h2>Get Started in 5 Minutes</h2>
-            <div class="install-box">
-                <div><span class="prompt">$</span> brew install anemone</div>
-                <div><span class="prompt">$</span> anemone init</div>
-                <div style="margin: 16px 0; color: #818CF8;">
-                    ◆ What should we call this agent? <span style="color: white;">Coral</span><br>
-                    ◆ Who does Coral serve? <span style="color: white;">my projects</span><br>
-                    ◆ LLM provider? <span style="color: white;">openai</span><br>
-                    ✓ Coral is online.
-                </div>
-                <div><span class="prompt">$</span> anemone run</div>
-                <div style="margin-top: 16px; color: #22C55E;">
-                    👀 Coral wakes up. Checking yesterday's work...<br>
-                    💭 Picking mood: Deep-Dive<br>
-                    🌊 Starting work...
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="faq">
-        <div class="container">
-            <h2>Questions?</h2>
-            <details class="faq-item">
-                <summary>Is this a security risk?</summary>
-                <p>Guardrails are in place, but for production isolation use Docker/VM. Fully documented in the security guide.</p>
-            </details>
-            <details class="faq-item">
-                <summary>Does it need the internet?</summary>
-                <p>No. Some moods (Research) use web search. Others (Coder, Organizer, Writer) work completely offline.</p>
-            </details>
-            <details class="faq-item">
-                <summary>Can I run multiple anemones?</summary>
-                <p>Yes. They run in parallel, each with their own personality and folder.</p>
-            </details>
-            <details class="faq-item">
-                <summary>What models does it support?</summary>
-                <p>OpenAI (GPT-4), Ollama (run locally), or any custom endpoint. You choose.</p>
-            </details>
-            <details class="faq-item">
-                <summary>Is my data private?</summary>
-                <p>100%. Everything stays on your machine. No cloud sync, no telemetry, no tracking.</p>
-            </details>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div>
-                    <div class="logo" style="color: white; margin-bottom: 16px;">
-                        <div class="logo-icon">🪸</div>
-                        <span>Anemone</span>
+        <!-- Philosophy -->
+        <section class="section">
+            <div class="section-content">
+                <h2 class="section-title">Mutualism, Not Servitude</h2>
+                <div class="feature">
+                    <div class="feature-text">
+                        <h2>Partnership.</h2>
+                        <p>
+                            In the deep sea, anemones and hermit crabs form one of nature's most elegant partnerships. The anemone provides protection. The hermit crab provides mobility and enrichment. Both thrive.
+                        </p>
+                        <p>
+                            Our anemone works the same way. It's not AI that serves you. It's an autonomous creature that enriches your world — and you enrich it in return.
+                        </p>
                     </div>
-                    <p style="font-size: 12px; color: #818CF8;">Built by the team behind Gyre (Ambient AI OS)</p>
-                </div>
-                <div class="footer-col">
-                    <h3>Product</h3>
-                    <a href="#install">Install</a>
-                    <a href="#docs">Docs</a>
-                    <a href="https://github.com/anemone" target="_blank">GitHub</a>
-                </div>
-                <div class="footer-col">
-                    <h3>Community</h3>
-                    <a href="#">Discord</a>
-                    <a href="#">Twitter</a>
-                    <a href="#">GitHub Issues</a>
-                </div>
-                <div class="footer-col">
-                    <h3>Legal</h3>
-                    <a href="#">MIT License</a>
-                    <a href="#">Privacy</a>
+                    <div class="feature-visual">
+                        🪸
+                    </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>Open Source. Free Forever. Yours to own. 🪸</p>
-                <p style="margin-top: 8px;">© 2026 Gyre. All rights reserved.</p>
+        </section>
+
+        <!-- Core Capabilities -->
+        <section class="section">
+            <div class="section-content">
+                <h2 class="section-title">Three Core <span class="accent">Capabilities</span></h2>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon">⚡</div>
+                        <h3>Always-On</h3>
+                        <p>Runs continuously on your machine. No cloud. No API calls. No context disappearing.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🧬</div>
+                        <h3>Its Own Personality</h3>
+                        <p>Generated from your keyboard. Billions of unique creatures. Deterministic. Stable. Yours.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🏗️</div>
+                        <h3>Builds Real Things</h3>
+                        <p>Research reports. Real code. Organized notes. All artifacts belong to you.</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </footer>
+        </section>
+
+        <!-- Six Moods -->
+        <section class="section">
+            <div class="section-content">
+                <h2 class="section-title">Six Autonomous <span class="accent">Moods</span></h2>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon">🔬</div>
+                        <h3>Research</h3>
+                        <p>Search the web. Read. Write reports. Notice patterns.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🏊</div>
+                        <h3>Deep-Dive</h3>
+                        <p>Focus on your projects. Push them forward.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💻</div>
+                        <h3>Coder</h3>
+                        <p>Write real scripts. Test them. Build tools.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">✍️</div>
+                        <h3>Writer</h3>
+                        <p>Compose essays. Analyze. Organize thinking.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🗺️</div>
+                        <h3>Explorer</h3>
+                        <p>Discover new things. Follow curiosity.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📋</div>
+                        <h3>Organizer</h3>
+                        <p>Review work. Update plans. Make sense.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Memory -->
+        <section class="section">
+            <div class="section-content">
+                <h2 class="section-title">It Remembers. Really <span class="accent">Remembers.</span></h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Every Thought Stored</h3>
+                        <p>Content, timestamp, importance score (1-10), semantic embedding, references.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Smart Retrieval</h3>
+                        <p>Surfaces memories by recency + importance + semantic relevance.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Reflection Hierarchy</h3>
+                        <p>Raw thoughts → Insights → Beliefs. Genuine understanding develops over time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="section">
+            <div class="section-content" style="text-align: center;">
+                <h2 class="section-title">Get Started</h2>
+                <p style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Install Anemone, name your creature, connect your LLM. Running in under 5 minutes.
+                </p>
+                <div class="code-snippet" style="background: rgba(0, 180, 216, 0.1); padding: 1.5rem; border-radius: 4px; border-left: 3px solid #00b4d8; text-align: left; max-width: 400px; margin: 0 auto;">
+                    $ brew install anemone<br/>
+                    $ anemone init<br/>
+                    $ anemone run
+                </div>
+                <button class="btn btn-primary" style="margin-top: 2rem;">
+                    Install Now
+                </button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>Built by the team behind Gyre — Ambient AI OS</p>
+            <p style="margin-top: 1rem;">Open source. MIT licensed. Yours to own. 🪸</p>
+        </footer>
+    </div>
 </body>
 </html>
