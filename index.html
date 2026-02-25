@@ -40,11 +40,43 @@
         .hero {
             min-height: 100dvh;
             display: grid;
+            grid-template-columns: 1fr 1fr;
             align-items: center;
             position: relative;
             padding: 2rem;
             padding-left: 8vw;
             overflow: hidden;
+            gap: 4rem;
+        }
+
+        .hero-image {
+            position: relative;
+            z-index: 2;
+            max-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+            filter: drop-shadow(0 20px 50px rgba(0, 180, 216, 0.3));
+            border: 1.5px solid rgba(0, 180, 216, 0.4);
+        }
+
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-left: 2rem;
+            }
+
+            .hero-image {
+                max-height: 400px;
+                margin-top: 2rem;
+            }
         }
 
         .hero-bg {
@@ -388,6 +420,9 @@
                     $ brew install anemone<br/>
                     $ anemone init
                 </div>
+            </div>
+            <div class="hero-image">
+                <img src="anemone-hero.jpg" alt="Real anemone in the ocean" />
             </div>
         </section>
 
