@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anemone</title>
+    <title>Anemone — AI That Lives With You</title>
     <link href="https://fonts.googleapis.com/css2?family=Satoshi:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #0a0a0a;
+            background: linear-gradient(180deg, #001428 0%, #001a2e 50%, #000f1f 100%);
             color: #ffffff;
             line-height: 1.6;
             overflow-x: hidden;
@@ -24,198 +24,251 @@
             scroll-behavior: smooth;
         }
 
-        /* Minimal Grid Background */
-        body::before {
-            content: '';
-            position: fixed;
+        .page {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 80px 40px;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Background elements */
+        .ocean-glow {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image:
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 50px 50px;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(0, 180, 216, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 50%, rgba(0, 150, 200, 0.08) 0%, transparent 50%);
             pointer-events: none;
-            z-index: 0;
-        }
-
-        .container {
-            position: relative;
             z-index: 1;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 40px;
         }
 
         /* Hero */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             text-align: center;
             padding: 100px 40px;
         }
 
         .hero h1 {
-            font-size: clamp(2rem, 8vw, 5.5rem);
+            font-size: clamp(2.5rem, 10vw, 4.5rem);
             font-weight: 300;
-            letter-spacing: -0.02em;
-            margin-bottom: 20px;
-            line-height: 1.1;
+            letter-spacing: -0.01em;
+            margin-bottom: 24px;
+            line-height: 1.15;
         }
 
-        .hero h1 .highlight {
-            color: #00d9ff;
+        .hero h1 .accent {
+            color: #00b4d8;
         }
 
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.25rem);
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
             font-weight: 300;
-            color: rgba(255, 255, 255, 0.7);
-            max-width: 600px;
-            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
             line-height: 1.7;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .cta-group {
             display: flex;
-            gap: 16px;
+            gap: 20px;
             justify-content: center;
             flex-wrap: wrap;
+            margin-bottom: 50px;
         }
 
         .btn {
-            padding: 14px 32px;
+            padding: 12px 28px;
             font-size: 0.95rem;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-            border: 1.5px solid rgba(255, 255, 255, 0.2);
-            background: transparent;
+            font-weight: 400;
+            letter-spacing: 0.03em;
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.03);
             color: white;
             border-radius: 2px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             text-decoration: none;
             display: inline-block;
+            backdrop-filter: blur(10px);
+            text-transform: uppercase;
         }
 
         .btn:hover {
-            border-color: #00d9ff;
-            background: rgba(0, 217, 255, 0.05);
-            box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+            border-color: #00b4d8;
+            background: rgba(0, 180, 216, 0.15);
+            box-shadow: 0 8px 25px rgba(0, 180, 216, 0.2);
         }
 
         .btn-primary {
-            border-color: #00d9ff;
-            background: rgba(0, 217, 255, 0.1);
+            border-color: #00b4d8;
+            background: rgba(0, 180, 216, 0.1);
         }
 
         .btn-primary:hover {
-            background: rgba(0, 217, 255, 0.15);
-            box-shadow: 0 0 25px rgba(0, 217, 255, 0.3);
+            background: rgba(0, 180, 216, 0.2);
         }
 
-        /* Sections */
-        .section {
-            padding: 120px 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .section-title {
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 400;
-            margin-bottom: 60px;
+        /* Narrative Sections */
+        .narrative {
             text-align: center;
+        }
+
+        .narrative h2 {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            font-weight: 300;
+            letter-spacing: -0.01em;
+            margin-bottom: 40px;
+            line-height: 1.2;
+        }
+
+        .narrative h2 .accent {
+            color: #00b4d8;
+        }
+
+        .narrative-text {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.9;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .narrative-text strong {
+            color: #00b4d8;
+            font-weight: 400;
+        }
+
+        /* Two Column */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        .column-content h3 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 20px;
             letter-spacing: -0.01em;
         }
 
-        .section-title .highlight {
-            color: #00d9ff;
+        .column-content p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            font-size: 1rem;
+            margin-bottom: 16px;
         }
 
-        /* Grid 3-Column */
-        .grid {
+        /* Features Grid */
+        .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 40px;
-            margin-top: 40px;
+            margin-top: 50px;
         }
 
-        .card {
+        .feature-card {
             padding: 40px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid rgba(0, 180, 216, 0.2);
             border-radius: 2px;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(10px);
             transition: all 0.4s ease;
         }
 
-        .card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(0, 217, 255, 0.4);
-            transform: translateY(-4px);
+        .feature-card:hover {
+            background: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-color: rgba(0, 180, 216, 0.5);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 180, 216, 0.15);
         }
 
-        .card-number {
+        .feature-card .icon {
             font-size: 2.5rem;
-            font-weight: 300;
-            color: #00d9ff;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
-        .card h3 {
+        .feature-card h3 {
             font-size: 1.1rem;
-            font-weight: 500;
+            font-weight: 400;
             margin-bottom: 12px;
-            letter-spacing: 0.03em;
+            letter-spacing: -0.01em;
         }
 
-        .card p {
+        .feature-card p {
             font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.6);
-            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.7;
         }
 
         /* Code Block */
         .code-block {
             background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(0, 217, 255, 0.2);
+            border: 1px solid rgba(0, 180, 216, 0.25);
             border-radius: 2px;
-            padding: 24px;
+            padding: 32px;
             font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.8);
-            line-height: 1.8;
-            overflow-x: auto;
+            line-height: 2;
+            text-align: left;
+            max-width: 450px;
             margin: 40px auto;
-            max-width: 500px;
+            overflow-x: auto;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .code-prompt {
-            color: #00d9ff;
+            color: #00b4d8;
             font-weight: 500;
         }
 
         .code-comment {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.35);
         }
 
         /* Footer */
         footer {
             padding: 60px 40px;
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
             color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
         }
 
         footer a {
-            color: #00d9ff;
+            color: #00b4d8;
             text-decoration: none;
-            transition: color 0.3s;
         }
 
         footer a:hover {
@@ -224,128 +277,167 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            .container, .hero, .section {
-                padding: 40px 20px;
+            .section {
+                padding: 60px 24px;
             }
 
-            .hero h1 {
-                margin-bottom: 16px;
+            .hero {
+                padding: 80px 24px;
             }
 
-            .section-title {
-                margin-bottom: 40px;
-            }
-
-            .grid {
+            .features-grid {
                 gap: 24px;
             }
 
-            .card {
+            .feature-card {
                 padding: 24px;
-            }
-        }
-
-        /* Smooth scroll */
-        @supports (scroll-behavior: smooth) {
-            html {
-                scroll-behavior: smooth;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Hero -->
-    <section class="hero">
-        <div class="container">
-            <h1>A tiny AI creature<br/>that <span class="highlight">lives on your computer.</span></h1>
-            <p>Thinks continuously. Remembers everything. Builds something real. All without leaving your machine.</p>
-            <div class="cta-group">
-                <button class="btn btn-primary">Install</button>
-                <button class="btn">Documentation</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Three Pillars -->
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Three Core <span class="highlight">Capabilities</span></h2>
-            <div class="grid">
-                <div class="card">
-                    <div class="card-number">01</div>
-                    <h3>Always-On</h3>
-                    <p>Runs continuously on your machine. No cloud. No API calls. Intelligence that's present without demanding attention.</p>
-                </div>
-                <div class="card">
-                    <div class="card-number">02</div>
-                    <h3>Its Own Personality</h3>
-                    <p>Generated from your keyboard. Billions of unique creatures. Deterministic. Stable. It matches how your brain works.</p>
-                </div>
-                <div class="card">
-                    <div class="card-number">03</div>
-                    <h3>Builds Real Things</h3>
-                    <p>Research reports. Real code. Organized notes. Everything belongs to you. Nothing uploaded. Nothing rented.</p>
+    <div class="page">
+        <!-- Hero -->
+        <section class="section hero">
+            <div class="ocean-glow"></div>
+            <div class="container">
+                <h1>A tiny AI creature<br/>that <span class="accent">lives on your computer.</span></h1>
+                <p class="hero-subtitle">
+                    It thinks continuously. Remembers everything. Builds something real. And it's completely yours.
+                </p>
+                <div class="cta-group">
+                    <button class="btn btn-primary">Install Anemone</button>
+                    <button class="btn">Learn More</button>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Six Moods -->
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Six Autonomous <span class="highlight">Moods</span></h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>🔬 Research</h3>
-                    <p>Search the web. Read. Write reports. Notice patterns you'd miss.</p>
+        <!-- Philosophy -->
+        <section class="section narrative">
+            <div class="ocean-glow"></div>
+            <div class="container">
+                <h2>Mutualism, Not <span class="accent">Servitude</span></h2>
+                <div class="narrative-text">
+                    <p>
+                        In the deep sea, anemones and hermit crabs form one of nature's most elegant partnerships. <strong>The anemone provides protection.</strong> <strong>The hermit crab provides mobility and enrichment.</strong> Both thrive. Neither could do it alone.
+                    </p>
                 </div>
-                <div class="card">
-                    <h3>🏊 Deep-Dive</h3>
-                    <p>Focus on your projects. Push them forward. Work while you sleep.</p>
-                </div>
-                <div class="card">
-                    <h3>💻 Coder</h3>
-                    <p>Write real scripts. Test them. Build tools that actually work.</p>
-                </div>
-                <div class="card">
-                    <h3>✍️ Writer</h3>
-                    <p>Compose essays. Analyze. Turn thinking into clarity.</p>
-                </div>
-                <div class="card">
-                    <h3>🗺️ Explorer</h3>
-                    <p>Discover new things. Follow curiosity. Build connections.</p>
-                </div>
-                <div class="card">
-                    <h3>📋 Organizer</h3>
-                    <p>Review work. Update plans. Make sense of chaos.</p>
+                <div class="two-column">
+                    <div class="column-content">
+                        <p>
+                            Our anemone works the same way. It's not AI that serves you. It's an autonomous creature that enriches your world — and you enrich it in return.
+                        </p>
+                        <p>
+                            You don't own the anemone. You inhabit the same space. True mutualism.
+                        </p>
+                    </div>
+                    <div class="column-content">
+                        <p>
+                            Most AI tools are rented. You ask, they answer, context disappears. Anemone is different. It runs on your machine. It remembers yesterday. It develops depth over weeks. It's alive in your world.
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Install -->
-    <section class="section">
-        <div class="container" style="text-align: center;">
-            <h2 class="section-title">Get Started</h2>
-            <p style="font-size: 1.05rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
-                Install Anemone, name your creature, connect your LLM. Running in under 5 minutes.
-            </p>
-            <div class="code-block">
-                <span class="code-prompt">$</span> brew install anemone<br/>
-                <span class="code-comment">or</span><br/>
-                <span class="code-prompt">$</span> curl -fsSL https://anemone.getgyre.com/install | sh<br/>
-                <br/>
-                <span class="code-prompt">$</span> anemone init<br/>
-                <span class="code-prompt">$</span> anemone run
+        <!-- Capabilities -->
+        <section class="section">
+            <div class="ocean-glow"></div>
+            <div class="container">
+                <div style="text-align: center; margin-bottom: 60px;">
+                    <h2 style="font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 300; letter-spacing: -0.01em; margin-bottom: 20px;">Three Core <span class="accent" style="color: #00b4d8;">Capabilities</span></h2>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="icon">⚡</div>
+                        <h3>Always-On Intelligence</h3>
+                        <p>Runs continuously. No API calls. No cloud. No context disappearing. Ambient AI means present without demanding attention.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">🧬</div>
+                        <h3>Its Own Personality</h3>
+                        <p>Generated from your keyboard. Billions of unique creatures. Deterministic. Stable. Genuinely matches how your thinking works.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">🏗️</div>
+                        <h3>Builds Real Things</h3>
+                        <p>Research reports. Real code. Organized notes. Everything stays in its folder. Everything belongs to you. Nothing uploaded.</p>
+                    </div>
+                </div>
             </div>
-            <button class="btn btn-primary">Install Now</button>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>Built by the team behind <a href="https://getgyre.com">Gyre</a></p>
-        <p style="margin-top: 12px;">MIT Licensed. Open Source. Yours to own.</p>
-    </footer>
+        <!-- Six Moods -->
+        <section class="section">
+            <div class="ocean-glow"></div>
+            <div class="container">
+                <div style="text-align: center; margin-bottom: 60px;">
+                    <h2 style="font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 300; letter-spacing: -0.01em; margin-bottom: 20px;">Six Autonomous <span class="accent" style="color: #00b4d8;">Moods</span></h2>
+                    <p style="font-size: 1rem; color: rgba(255, 255, 255, 0.65); max-width: 600px; margin: 0 auto;">Each mood shapes what happens next. Together they create a creature that thinks differently depending on what matters in the moment.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="icon">🔬</div>
+                        <h3>Research</h3>
+                        <p>Search the web. Read deeply. Write synthesis. Notice patterns you'd miss working alone.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">🏊</div>
+                        <h3>Deep-Dive</h3>
+                        <p>Focus on your projects. Push them forward. Work through complexity while you handle other things.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">💻</div>
+                        <h3>Coder</h3>
+                        <p>Write real scripts. Test them. Build tools that work. Code that lives in your folder.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">✍️</div>
+                        <h3>Writer</h3>
+                        <p>Compose essays. Analyze ideas. Turn thinking into clarity. Organized and coherent.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">🗺️</div>
+                        <h3>Explorer</h3>
+                        <p>Discover new things. Follow curiosity. Build connections. Genuine intellectual wandering.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">📋</div>
+                        <h3>Organizer</h3>
+                        <p>Review your work. Update plans. Make sense of complexity. Clear perspective on what matters.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Install -->
+        <section class="section" style="padding: 100px 40px;">
+            <div class="ocean-glow"></div>
+            <div class="container" style="text-align: center;">
+                <h2 style="font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 300; letter-spacing: -0.01em; margin-bottom: 40px;">Get Started in <span class="accent" style="color: #00b4d8;">Five Minutes</span></h2>
+                <p style="font-size: 1rem; color: rgba(255, 255, 255, 0.65); max-width: 600px; margin: 0 auto 40px;">Install Anemone. Name your creature. Connect your LLM. That's it. Your anemone wakes up and starts thinking.</p>
+                <div class="code-block">
+                    <span class="code-prompt">$</span> brew install anemone<br/>
+                    <span class="code-comment">or</span><br/>
+                    <span class="code-prompt">$</span> curl -fsSL https://anemone.getgyre.com/install | sh<br/>
+                    <br/>
+                    <span class="code-prompt">$</span> anemone init<br/>
+                    <span class="code-comment">◆ What should we call this?</span> Coral<br/>
+                    <span class="code-comment">◆ LLM provider?</span> openai<br/>
+                    <span class="code-prompt">✓</span> Coral is online<br/>
+                    <br/>
+                    <span class="code-prompt">$</span> anemone run
+                </div>
+                <button class="btn btn-primary">Install Now</button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>Built by the team behind <a href="https://getgyre.com">Gyre</a></p>
+            <p style="margin-top: 12px;">MIT Licensed. Open Source. Completely yours.</p>
+            <p style="margin-top: 12px; font-size: 0.8rem;">🪸</p>
+        </footer>
+    </div>
 </body>
 </html>
