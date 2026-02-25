@@ -196,10 +196,27 @@
 
         .code-snippet {
             font-family: 'Menlo', 'Monaco', monospace;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 1rem;
-            line-height: 1.6;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 2rem;
+            line-height: 1.8;
+            background: rgba(0, 180, 216, 0.08);
+            border: 1.5px solid rgba(0, 180, 216, 0.3);
+            border-radius: 4px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            position: relative;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .code-snippet .prompt {
+            color: #00b4d8;
+            font-weight: 500;
+        }
+
+        .code-snippet .comment {
+            color: rgba(255, 255, 255, 0.4);
+            font-style: italic;
         }
 
         /* Content Sections */
@@ -385,8 +402,9 @@
                     </button>
                 </div>
                 <div class="code-snippet">
-                    $ brew install anemone<br/>
-                    $ anemone init
+                    <span class="prompt">$</span> brew install anemone<br/>
+                    <span class="comment">or</span><br/>
+                    <span class="prompt">$</span> curl -fsSL https://anemone.getgyre.com/install | sh
                 </div>
             </div>
         </section>
@@ -503,10 +521,17 @@
                 <p style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
                     Install Anemone, name your creature, connect your LLM. Running in under 5 minutes.
                 </p>
-                <div class="code-snippet" style="background: rgba(0, 180, 216, 0.1); padding: 1.5rem; border-radius: 4px; border-left: 3px solid #00b4d8; text-align: left; max-width: 400px; margin: 0 auto;">
-                    $ brew install anemone<br/>
-                    $ anemone init<br/>
-                    $ anemone run
+                <div class="code-snippet" style="max-width: 500px; margin: 2rem auto 0;">
+                    <span class="prompt">$</span> anemone init<br/>
+                    <span class="comment">◆ What should we call this agent?</span> Coral<br/>
+                    <span class="comment">◆ Who does Coral serve?</span> my projects<br/>
+                    <span class="comment">◆ LLM provider?</span> openai<br/>
+                    <span class="prompt">✓</span> Coral is online<br/>
+                    <br/>
+                    <span class="prompt">$</span> anemone run<br/>
+                    <span class="comment">👀 Coral wakes up...</span><br/>
+                    <span class="comment">💭 Thinking...</span><br/>
+                    <span class="comment">🌊 Starting work...</span>
                 </div>
                 <button class="btn btn-primary" style="margin-top: 2rem;">
                     Install Now
