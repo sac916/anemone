@@ -197,18 +197,19 @@
         .code-snippet {
             font-family: 'Menlo', 'Monaco', monospace;
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.85);
             margin-top: 2rem;
             line-height: 1.8;
             background: 
-                linear-gradient(to bottom, rgba(0, 180, 216, 0.15) 0%, rgba(0, 180, 216, 0.15) 28px, rgba(0, 180, 216, 0.08) 28px, rgba(0, 180, 216, 0.08) 100%);
-            border: 1.5px solid rgba(0, 180, 216, 0.4);
+                linear-gradient(to bottom, rgba(20, 50, 80, 0.6) 0%, rgba(20, 50, 80, 0.6) 28px, rgba(0, 0, 0, 0.15) 28px, rgba(0, 0, 0, 0.15) 100%);
+            border: 1.5px solid rgba(0, 180, 216, 0.25);
             border-radius: 8px;
             padding: 1.5rem;
             padding-top: 2rem;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             position: relative;
-            box-shadow: 0 15px 50px rgba(0, 180, 216, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05), inset 0 28px 0 -28px rgba(0, 180, 216, 0.3);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.02);
             overflow: hidden;
         }
 
@@ -219,19 +220,20 @@
             top: 6px;
             left: 12px;
             font-size: 0.5rem;
-            color: rgba(255, 255, 255, 0.25);
+            color: rgba(255, 255, 255, 0.15);
             letter-spacing: 6px;
             z-index: 10;
         }
 
         .code-snippet .prompt {
-            color: #00b4d8;
+            color: #ff8c42;
             font-weight: 500;
         }
 
         .code-snippet .comment {
-            color: rgba(255, 255, 255, 0.4);
+            color: #7aff59;
             font-style: italic;
+            opacity: 0.9;
         }
 
         /* Content Sections */
